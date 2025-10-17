@@ -1,0 +1,33 @@
+name: Documentation Agent
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Run Documentation Agent
+      run: |
+        python src/agent.py
+    
+    - name: Commit documentation changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add agent_test_output/
+        git commit -m "docs: Update documentation [skip ci]" || echo "No changes to commit"
+        git push
