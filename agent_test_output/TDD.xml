@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TDD>
+  <api file="tests\prueba.cs" type="class" name="Program" language="C#" />
+  <api file="tests\prueba.cs" type="method" name="SeleccionarDificultad" language="C#" />
+  <api file="tests\prueba.cs" type="method" name="CalcularPuntuacion" language="C#" />
+  <api file="tests\prueba.cs" type="method" name="GuardarPuntuacion" language="C#" />
+  <api file="tests\prueba.cs" type="method" name="MostrarEstadisticas" language="C#" />
+  <api file="tests\prueba.cs" type="method" name="Main" language="C#" />
+  <api file="scrip-agente.py" type="python_class" name="DocumentationAgent" language="Python" />
+  <api file="tests\simulate_trigger.py" type="python_function" name="get_user" language="Python" />
+  <api file="tests\simulate_trigger.py" type="python_class" name="OrderService" language="Python" />
+  <api file="tests\simulate_trigger.py" type="python_function" name="parse_py" language="Python" />
+  <api file="tests\simulate_trigger.py" type="python_function" name="parse_js" language="Python" />
+  <api file="sample_repo\src\api.py" type="python_function" name="get_user" language="Python" />
+  <api file="sample_repo\src\api.py" type="python_class" name="OrderService" language="Python" />
+  <api file="sample_repo\src\utils.js" type="javascript_function" name="formatDate" language="JavaScript" />
+  <api file="sample_repo\src\utils.js" type="javascript_function" name="computeTotal" language="JavaScript" />
+</TDD>

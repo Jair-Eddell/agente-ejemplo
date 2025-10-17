@@ -1,33 +1,44 @@
-name: Documentation Agent
+name: Run Documentation Agent
 
 on:
   push:
     branches: [ main ]
   pull_request:
-    types: [ closed ]
+    types: [closed]
+
+permissions:
+  contents: write
 
 jobs:
-  generate-docs:
+  run-agent:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Run Documentation Agent
-      run: |
-        python src/agent.py
-    
-    - name: Commit documentation changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add agent_test_output/
-        git commit -m "docs: Update documentation [skip ci]" || echo "No changes to commit"
-        git push
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run documentation agent
+        run: |
+          python scrip-agente.py
+        # ajusta el nombre/ruta del script si es distinto
+
+      - name: Commit generated docs (if changes)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "doc-bot"
+          git config user.email "actions@github.com"
+          git add agent_test_output || true
+          if ! git diff --staged --quiet; then
+            git commit -m "docs: auto-update (agent) [skip ci]"
+            git push
+          else
+            echo "No documentation changes to commit"
+          fi

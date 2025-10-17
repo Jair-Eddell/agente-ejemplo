@@ -1,3 +1,4 @@
+# ...existing code...
 from pathlib import Path
 import re
 import json
@@ -18,7 +19,8 @@ class DocumentationAgent:
                 if '.git' in str(file):
                     continue
                 try:
-                    content = file.read_text(encoding='utf-8')
+                    print(f"Parsing {file}")
+                    content = file.read_text(encoding='utf-8', errors='ignore')
                     if ext == '.cs':
                         signatures.extend(self._parse_csharp(file, content))
                     elif ext == '.py':
@@ -27,6 +29,7 @@ class DocumentationAgent:
                         signatures.extend(self._parse_javascript(file, content))
                 except Exception as e:
                     print(f"Error parsing {file}: {e}")
+        print(f"Total signatures found: {len(signatures)}")
         return signatures
 
     def _parse_csharp(self, file, content):
@@ -35,7 +38,7 @@ class DocumentationAgent:
         signatures = []
         
         # Parse classes
-        class_matches = re.finditer(r'class\s+(\w+)', content)
+        class_matches = re.finditer(r'\bclass\s+([A-Za-z_][A-Za-z0-9_]*)', content)
         for match in class_matches:
             signatures.append({
                 'file': str(relative_path),
@@ -44,8 +47,8 @@ class DocumentationAgent:
                 'language': 'C#'
             })
 
-        # Parse methods
-        method_matches = re.finditer(r'(?:public|private|protected)\s+\w+\s+(\w+)\s*\(', content)
+        # Parse methods (simple)
+        method_matches = re.finditer(r'\b(?:public|private|protected|internal|static|virtual|override)\b[^{;()]*\b([A-Za-z_][A-Za-z0-9_]*)\s*\(', content)
         for match in method_matches:
             signatures.append({
                 'file': str(relative_path),
@@ -56,20 +59,66 @@ class DocumentationAgent:
         
         return signatures
 
+    # --- NUEVOS: parsers para Python y JS ---
+    def _parse_python(self, file, content):
+        relative_path = file.relative_to(self.base_path)
+        signatures = []
+        for m in re.finditer(r'^(?:async\s+)?(?:def|class)\s+([A-Za-z_][A-Za-z0-9_]*)', content, flags=re.M):
+            kind = 'python_function' if content[m.start():m.start()+10].strip().startswith('def') else 'python_class'
+            signatures.append({
+                'file': str(relative_path),
+                'type': kind,
+                'name': m.group(1),
+                'language': 'Python'
+            })
+        return signatures
+
+    def _parse_javascript(self, file, content):
+        relative_path = file.relative_to(self.base_path)
+        signatures = []
+        # function declarations and exported functions
+        for a,b in re.findall(r'function\s+([A-Za-z_][A-Za-z0-9_]*)|export\s+function\s+([A-Za-z_][A-Za-z0-9_]*)', content):
+            name = a or b
+            if name:
+                signatures.append({
+                    'file': str(relative_path),
+                    'type': 'javascript_function',
+                    'name': name,
+                    'language': 'JavaScript'
+                })
+        # arrow function exports (basic)
+        for m in re.finditer(r'export\s+const\s+([A-Za-z_][A-Za-z0-9_]*)\s*=', content):
+            signatures.append({
+                'file': str(relative_path),
+                'type': 'javascript_function',
+                'name': m.group(1),
+                'language': 'JavaScript'
+            })
+        return signatures
+    # --- FIN parsers ---
+
     def get_git_changes(self):
         """Get recent git commits"""
         try:
             cmd = ['git', 'log', '--pretty=format:%H|%an|%ad|%s', '--date=iso', '-n', '50']
-            result = subprocess.run(cmd, capture_output=True, text=True)
+            result = subprocess.run(cmd, capture_output=True, text=True, cwd=self.base_path)
+            if result.returncode != 0:
+                print("git log failed:", result.stderr)
+                return []
             commits = []
             for line in result.stdout.splitlines():
-                hash, author, date, msg = line.split('|')
+                parts = line.split('|', 3)
+                if len(parts) < 4:
+                    # línea inesperada: ignorar
+                    continue
+                hash, author, date, msg = parts
                 commits.append({
                     'hash': hash[:7],
                     'author': author,
                     'date': date,
                     'message': msg
                 })
+            print(f"Commits found: {len(commits)}")
             return commits
         except Exception as e:
             print(f"Error getting git history: {e}")
@@ -114,3 +163,4 @@ if __name__ == '__main__':
     agent = DocumentationAgent()
     agent.generate_documentation()
     print("Documentation generated successfully in ./agent_test_output/")
+# ...existing code...

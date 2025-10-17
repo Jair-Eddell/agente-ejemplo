@@ -1,0 +1,130 @@
+{
+  "generated_at": "2025-10-17T09:36:12.222144",
+  "version": "1.0.0",
+  "signatures_found": 15,
+  "commits_analyzed": 5,
+  "api_changes": [
+    {
+      "file": "tests\\prueba.cs",
+      "type": "class",
+      "name": "Program",
+      "language": "C#"
+    },
+    {
+      "file": "tests\\prueba.cs",
+      "type": "method",
+      "name": "SeleccionarDificultad",
+      "language": "C#"
+    },
+    {
+      "file": "tests\\prueba.cs",
+      "type": "method",
+      "name": "CalcularPuntuacion",
+      "language": "C#"
+    },
+    {
+      "file": "tests\\prueba.cs",
+      "type": "method",
+      "name": "GuardarPuntuacion",
+      "language": "C#"
+    },
+    {
+      "file": "tests\\prueba.cs",
+      "type": "method",
+      "name": "MostrarEstadisticas",
+      "language": "C#"
+    },
+    {
+      "file": "tests\\prueba.cs",
+      "type": "method",
+      "name": "Main",
+      "language": "C#"
+    },
+    {
+      "file": "scrip-agente.py",
+      "type": "python_class",
+      "name": "DocumentationAgent",
+      "language": "Python"
+    },
+    {
+      "file": "tests\\simulate_trigger.py",
+      "type": "python_function",
+      "name": "get_user",
+      "language": "Python"
+    },
+    {
+      "file": "tests\\simulate_trigger.py",
+      "type": "python_class",
+      "name": "OrderService",
+      "language": "Python"
+    },
+    {
+      "file": "tests\\simulate_trigger.py",
+      "type": "python_function",
+      "name": "parse_py",
+      "language": "Python"
+    },
+    {
+      "file": "tests\\simulate_trigger.py",
+      "type": "python_function",
+      "name": "parse_js",
+      "language": "Python"
+    },
+    {
+      "file": "sample_repo\\src\\api.py",
+      "type": "python_function",
+      "name": "get_user",
+      "language": "Python"
+    },
+    {
+      "file": "sample_repo\\src\\api.py",
+      "type": "python_class",
+      "name": "OrderService",
+      "language": "Python"
+    },
+    {
+      "file": "sample_repo\\src\\utils.js",
+      "type": "javascript_function",
+      "name": "formatDate",
+      "language": "JavaScript"
+    },
+    {
+      "file": "sample_repo\\src\\utils.js",
+      "type": "javascript_function",
+      "name": "computeTotal",
+      "language": "JavaScript"
+    }
+  ],
+  "recent_commits": [
+    {
+      "hash": "71d2b53",
+      "author": "jair-eddell",
+      "date": "2025-10-17 09:34:59 -0600",
+      "message": "se agrego selecion de dificultad y guardado de puntuacion"
+    },
+    {
+      "hash": "4773684",
+      "author": "jair-eddell",
+      "date": "2025-10-17 09:28:54 -0600",
+      "message": "se a\u00c3\u00b1adio niveles de dificultad"
+    },
+    {
+      "hash": "98539df",
+      "author": "Jair-Eddell",
+      "date": "2025-10-17 09:21:40 -0600",
+      "message": "nuevas mejoras en el archivo c# donde tiene mensajes de bienvenida, una condicion de intentos, mensaje de numero de intentos y mensajes de despedida, a su vez modificaciones en el codigo"
+    },
+    {
+      "hash": "a38c53b",
+      "author": "Jair-Eddell",
+      "date": "2025-10-17 09:14:10 -0600",
+      "message": "archivos necesarios para el agente"
+    },
+    {
+      "hash": "99a7992",
+      "author": "Jair-Eddell",
+      "date": "2025-10-17 08:59:37 -0600",
+      "message": "chore(initial): prueba-agente"
+    }
+  ]
+}
